@@ -1,0 +1,90 @@
+{
+  "spells": {
+    "4000": {
+      "name": "Glintstone Pebble",
+      "labels": [ "magic", "pebble" ],
+      "roles": [ "projectile", "impact" ],
+      "comment": "Glintstone Pebble is the baseline small magic projectile payload."
+    },
+    "4301": {
+      "name": "Carian Phalanx",
+      "labels": [ "swords", "magic", "swarm" ],
+      "roles": [ "control", "projectile", "startup" ],
+      "comment": "Carian Phalanx uses controller bullets that create hovering sword projectiles before release."
+    },
+    "4210": {
+      "name": "Founding Rain of Stars",
+      "labels": [ "magic", "cloud", "rain", "star" ],
+      "roles": [ "control", "ambient", "projectile", "hit", "terminal" ],
+      "comment": "Founding Rain of Stars has cloud/controller setup and no-consume rain branches containing the actual falling hit bullets.",
+      "bullets": {
+        "10421000": {
+          "labels": [ "magic", "cloud", "startup" ],
+          "roles": [ "control", "startup" ],
+          "comment": "Default root/controller setup for the overhead cloud."
+        },
+        "10421004": {
+          "labels": [ "magic", "cloud", "rain" ],
+          "roles": [ "control", "loop" ],
+          "comment": "Controller bullet that creates the falling rain bullet chain."
+        },
+        "10421005": {
+          "labels": [ "magic", "rain", "star" ],
+          "roles": [ "projectile", "hit" ],
+          "comment": "Falling rain projectile before impact handoff."
+        },
+        "10421006": {
+          "labels": [ "magic", "star" ],
+          "roles": [ "impact", "hit", "terminal" ],
+          "comment": "Terminal damage/impact bullet for one Founding Rain branch."
+        },
+        "10421055": {
+          "labels": [ "magic", "rain", "star" ],
+          "roles": [ "projectile", "hit" ],
+          "comment": "High-count no-consume falling rain projectile observed in live Firestorm testing."
+        },
+        "10421056": {
+          "labels": [ "magic", "star" ],
+          "roles": [ "impact", "hit", "terminal" ],
+          "comment": "High-count no-consume terminal hit bullet observed in live Firestorm testing."
+        }
+      }
+    },
+    "6010": {
+      "name": "Flame Sling",
+      "labels": [ "fire", "small explosion" ],
+      "roles": [ "projectile", "impact", "hit" ],
+      "comment": "Flame Sling provides a compact fire projectile and small explosion payload.",
+      "bullets": {
+        "10601000": {
+          "labels": [ "fire" ],
+          "roles": [ "projectile" ],
+          "comment": "Visible Flame Sling projectile SFX."
+        },
+        "10601001": {
+          "labels": [ "fire", "small explosion" ],
+          "roles": [ "impact", "hit", "terminal" ],
+          "comment": "Flame Sling impact/hit payload."
+        }
+      }
+    }
+  },
+  "bridgeRequests": [
+    {
+      "name": "firestorm-hit",
+      "styleSpellId": 4210,
+      "payloadSpellId": 6010,
+      "desiredLabels": [ "fire", "rain", "star" ],
+      "desiredRoles": [ "projectile", "impact", "hit" ],
+      "take": 10
+    },
+    {
+      "name": "firestorm-control",
+      "styleSpellId": 4210,
+      "payloadSpellId": 6010,
+      "desiredLabels": [ "fire", "cloud" ],
+      "desiredRoles": [ "control", "ambient", "startup" ],
+      "take": 10
+    }
+  ]
+}

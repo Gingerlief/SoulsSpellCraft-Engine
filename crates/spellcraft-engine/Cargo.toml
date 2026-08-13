@@ -1,0 +1,25 @@
+[package]
+name = "spellcraft-engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Spell param-graph analysis + fusion composition — the actual novel IP, ported from elden_magic_mod's Core/SpellCreation and Core/LiveEditing. Pure logic over souls-format types; carries the heaviest cargo test coverage in the workspace."
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+# Content-addresses the graph cache on regulation.bin's bytes (see src/cache.rs).
+sha2.workspace = true
+souls-format = { path = "../souls-format" }
+ts-rs = { workspace = true, optional = true }
+
+[dev-dependencies]
+
+[features]
+# Emits TypeScript declarations for the `export` document types. Off by default so the
+# derive macro never enters a normal build; `xtask` turns it on to run `spell types`.
+ts = ["dep:ts-rs"]
+# Stress-test fixture per docs/planning/known-facts-carryover.md: Adula's Moonblade
+# (19 nodes / 42 edges, known reuse cycles) is the reference case for the graph walker.

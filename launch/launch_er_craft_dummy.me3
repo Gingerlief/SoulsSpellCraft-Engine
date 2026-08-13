@@ -1,0 +1,30 @@
+profileVersion = "v1"
+
+# Launch Elden Ring with the crafting-rebuild-path milestone's regulation.bin, produced by
+# `cargo run -p xtask -- spike craft-dummy` (docs/superpowers/plans/2026-07-28-crafting-rebuild-path.md).
+#
+#   cargo run -p xtask -- spike craft-dummy
+#   me3 launch --auto-detect -p launch/launch_er_craft_dummy.me3
+#
+# The spike writes launch/patched/craft-dummy-regulation.bin; this profile overlays a
+# *separate* copy at launch/patched-craft-dummy/regulation.bin instead of touching
+# launch/patched/regulation.bin (that file is a distinct, already-validated artifact from
+# `xtask spell apply` and is left alone). The game's own regulation.bin is never touched
+# either way — ME3 layers this on top at load time.
+#
+# What to check once the game is up: allocated slot 4002 in Magic.param/EquipParamGoods.param
+# (an empty dummy spell referencing nothing, cloned from Glintstone Pebble 4000, with
+# refId1..refId10 forced to -1). Expect blank name/description text — that's the known,
+# accepted result of not having Oodle FFI for msg/*/item*.msgbnd.dcx, not a bug.
+#
+# If this profile fails to load in a way the base game / launch_er_patched.me3 doesn't, the
+# named residual risk (docs/handoff.md, docs/known-offsets.md) is the BND4 hash table: it is
+# never rewritten by the rebuild path, on the assumption that it maps a name hash to a fixed
+# header index rather than a byte offset — untested against the real game until now.
+natives = []
+packages = [
+  { id = "morro-craft-dummy", source = 'patched-craft-dummy\' },
+]
+supports = [
+  { game = "elden-ring" },
+]

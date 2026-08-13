@@ -1,0 +1,41 @@
+profileVersion = "v1"
+
+# Launch Elden Ring with a regulation.bin produced by `xtask spell apply` or
+# `xtask craft apply` — and, for `craft apply`, a matching item-text msgbnd alongside it
+# whenever the patch names the crafted spell.
+#
+#   cargo run -p xtask -- spell apply <patch.json> --force
+#   cargo run -p xtask -- craft apply <patch.json> --force
+#   me3 launch --auto-detect -p launch/launch_er_patched.me3
+#
+# Both commands write to launch/patched/regulation.bin by default, which is exactly what
+# the package below overlays onto the game's data root. `craft apply` additionally writes
+# launch/patched/msg/engus/item_dlc02.msgbnd.dcx beside it whenever the patch carries a
+# name/info/caption, so a crafted spell reads its real name in-game instead of
+# `?GoodsName?` — the same package overlays that subtree too, no profile change needed
+# (see docs/superpowers/specs/2026-08-05-item-text-extraction-design.md). The game's own
+# files are never touched — ME3 layers `launch/patched/` on top at load time — and neither
+# is the source regulation/msgbnd either apply command reads from.
+#
+# Validated on Elden Ring 1.16.2 (2026-07-25): a regulation written by this pipeline loads
+# and the patched values take effect. Getting there required pinning the zstd window to
+# log 16 — see souls-format/src/write.rs. If a future game patch breaks loading, pair this
+# profile with `xtask spell repack` (zero edits) to tell a container problem from a patch
+# problem before investigating anything else.
+#
+# No regbinmeme.dll here, unlike the older profiles in the sibling projects: me3 0.11
+# handles regulation.bin through the package mechanism directly, so the shim is obsolete.
+#
+# The FXR hot-reload server is deliberately NOT loaded. This profile exists to answer one
+# question — does the written regulation work — and every extra native is another candidate
+# when the answer is "no". Use launch_er_with_reloader.me3 for reload work.
+#
+# Top-level arrays rather than [[table]] headers, matching the other profiles here. Mixing
+# the two forms silently reparents a trailing key into the preceding table.
+natives = []
+packages = [
+  { id = "morro-patched", source = 'patched\' },
+]
+supports = [
+  { game = "elden-ring" },
+]

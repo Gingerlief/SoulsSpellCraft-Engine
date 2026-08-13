@@ -1,0 +1,10 @@
+profileVersion = "v1"
+
+# Built from crates/fxr-reload-server (see docs/planning/recommendations.md).
+natives = [
+  { path = "fxr_reload_server.dll" },
+]
+packages = []
+supports = [
+  { game = "darksouls3" },
+]

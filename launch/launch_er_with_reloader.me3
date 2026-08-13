@@ -1,0 +1,15 @@
+profileVersion = "v1"
+
+# Built from crates/fxr-reload-server (see docs/planning/recommendations.md).
+# Cargo cdylib output naming turns hyphens into underscores: fxr-reload-server -> fxr_reload_server.dll
+natives = [
+  { path = "fxr_reload_server.dll" },
+  # Enabled once crates/sfx-texture-live and crates/overlay-ui reach in-game validation
+  # (migration Phases 4-5, docs/planning/recommendations.md):
+  # { path = "sfx_texture_live.dll" },
+  # { path = "overlay_ui.dll" },
+]
+packages = []
+supports = [
+  { game = "elden-ring" },
+]

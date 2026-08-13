@@ -1,0 +1,26 @@
+[package]
+name = "xtask"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Dev tooling: prelaunch regen, sandbox clone/deploy, WitchyBND wrapper. Formalizes the prelaunch.ps1 pattern from Spell_Making_UI as a first-class command instead of a bolt-on after a crash — see docs/planning/open-blockers-and-scope-decisions.md item 8."
+
+[[bin]]
+name = "xtask"
+path = "src/main.rs"
+
+[dependencies]
+# Intentionally std-only for now so `cargo run -p xtask` needs no network fetch. Add `clap`
+# once subcommands need real argument parsing beyond the simple dispatch below.
+
+# Added for the Phase 0 spike's `spike gravity-pebble` command (docs/planning/bootstrap-checklist.md
+# goal 4) -- a throwaway smoke test proving souls-format's row-clone/field-patch/ID-realloc
+# operations, deliberately kept out of spellcraft-engine (see docs/known-offsets.md).
+# `write` powers `spell apply`. It pulls in the C zstd library; read paths do not.
+souls-format = { path = "../crates/souls-format", features = ["write"] }
+# For the `graph-cache` and `spell` commands.
+# `ts` powers `spell types`, which generates the TypeScript declarations the external
+# editor consumes. Enabled only here, so the derive macro stays out of shipped builds.
+spellcraft-engine = { path = "../crates/spellcraft-engine", features = ["ts"] }
+serde_json.workspace = true

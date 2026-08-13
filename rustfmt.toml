@@ -1,0 +1,14 @@
+# Stable rustfmt defaults, pinned rather than implied.
+#
+# `max_width = 100` is already the default; it is written down because it is also what the
+# code was hand-written to (p95 line length was 91 before the formatter was adopted), so
+# adopting rustfmt cost no rewrapping of prose or signatures.
+#
+# Nothing else is set on purpose. `use_small_heuristics = "Max"` was measured and made the
+# diff *larger* (147 hunks vs 138), so the defaults are the closer fit to how this code was
+# already written.
+#
+# Note comments are NOT reflowed: `wrap_comments` is nightly-only and stays off. Every
+# hand-aligned comment in this repo — the 19/42 Adula derivation, the edge tables — is
+# therefore safe from the formatter, and only clippy had an opinion about them.
+max_width = 100

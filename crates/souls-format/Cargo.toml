@@ -1,0 +1,26 @@
+[package]
+name = "souls-format"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "FromSoftware file formats in Rust: regulation.bin, PARAMDEF, FXR, and the Oodle/DCX/BND4/FMG item-text stack. Read paths validated against SoulsFormats by the Phase 0 spike (2026-07-24); the write path is confirmed in-game (2026-08-11)."
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+aes = "0.8"
+cbc = "0.1"
+roxmltree = "0.20"
+ruzstd = "0.7"
+libloading = "0.8"
+zstd = { version = "0.13.3", optional = true }
+
+[dev-dependencies]
+
+[features]
+
+write = ["dep:zstd"]
+
